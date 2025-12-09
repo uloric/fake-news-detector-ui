@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔍 Detector Fake News AI</title>
+    <title>🛡️ FakeyGUARD</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
         
@@ -609,7 +609,7 @@
     <div class="container">
         <!-- Hero Section -->
         <div class="hero">
-            <h1>🔍 Detector Fake News AI</h1>
+            <h1>🛡️ FakeyGUARD</h1>
             <p class="subtitle">Analiză inteligentă cu AI pentru identificarea știrilor false</p>
             <div class="badge">
                 <span>⚡</span>
@@ -621,8 +621,8 @@
                 <ul>
                     <li><strong>Texte în engleză:</strong> Precizie ~85-90%</li>
                     <li><strong>Texte în română:</strong> Precizie ~60-70% (model antrenat pe engleză!)</li>
-                    <li><strong>Acest tool este un PROTOTIP</strong> - nu înlocuiește verificarea manuală</li>
-                    <li><strong>ÎNTOTDEAUNA verifică manual sursa și cross-check cu alte platforme!</strong></li>
+                    <li><strong>Acest proiect este un PROTOTIP</strong> - nu înlocuiește verificarea manuală!</li>
+                    <li><strong>ÎNTOTDEAUNA verifică manual sursa și VERIFICĂ DE DOUĂ ORI cu alte platforme!</strong></li>
                 </ul>
             </div>
         </div>
@@ -698,19 +698,19 @@
             </div>
 
             <div class="example-item" onclick="loadExample(2)">
-                <span class="example-tag">Exemplu 3: Clickbait</span>
-                <p class="example-text">Breaking: Scientists discover water cures all diseases! Doctors hate this simple trick!</p>
-            </div>
-        </div>
+                <span class="example-tag">Exemplu 3: Știre senzaționalistă (Clickbait) </span>
+                <p class="example-text">BOMBĂ! Politicianul Y a fost arestat! Investigație EXCLUSIVĂ! Distribuie înainte să dispară!</p>
+             </div>
+
 
         <!-- Footer -->
         <div class="footer">
             <h3>📚 Despre acest proiect</h3>
             <div class="footer-divider"></div>
             <div class="footer-content">
-                <p><strong>Dezvoltator:</strong> Vlad (vladutzzz)</p>
+                <p><strong>Dezvoltatori:</strong> Echipa Exploratorii AI</p>
                 <p><strong>Data:</strong> Decembrie 2025</p>
-                <p><strong>Scop:</strong> Demonstrație proof-of-concept pentru detectarea fake news</p>
+                <p><strong>Scop:</strong> Proiect demonstrativ de detectare a fake news-ului</p>
             </div>
             
             <div class="tech-stack">
@@ -722,7 +722,7 @@
 
             <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                 <p style="font-size: 0.9rem; color: #808090;">
-                    ⚠️ <em>Disclaimer: Acest tool este un prototip educațional. Nu substituie verificarea de către factori profesioniști sau fact-checking-ul jurnalistic. Rezultatele sunt indicative și necesită validare umană.</em>
+                    ⚠️ <em>Disclaimer: Acest proiect este un prototip educațional. Nu substituie verificarea de către factori profesioniști sau verificarea faptelor jurnalistice. Rezultatele sunt indicative și necesită validare umană.</em>
                 </p>
             </div>
         </div>
@@ -730,10 +730,10 @@
 
     <script>
         const examples = [
-            "URGENT! Apa minerală vindecă cancerul! Medicii ascund adevărul! Distribuie acum!",
-            "Guvernul României a anunțat noi măsuri economice pentru susținerea IMM-urilor în cadrul conferinței de presă de astăzi.",
-            "Breaking: Scientists discover water cures all diseases! Doctors hate this simple trick!"
-        ];
+    "URGENT! Apa minerală vindecă cancerul! Medicii ascund adevărul! Distribuie acum!",
+    "Guvernul României a anunțat noi măsuri economice pentru susținerea IMM-urilor în cadrul conferinței de presă de astăzi.",
+    "BOMBĂ! Politicianul Y a fost arestat! Investigație EXCLUSIVĂ! Distribuie înainte să dispară!"
+];
 
         function loadExample(index) {
             document.getElementById('newsText').value = examples[index];
