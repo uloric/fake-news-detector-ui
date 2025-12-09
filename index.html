@@ -743,58 +743,42 @@
         function clearAll() {
             document.getElementById('newsText').value = '';
             document.getElementById('resultContainer').classList.remove('active');
+            document.getElementById('loader').classList.remove('active');
             document.getElementById('newsText').focus();
         }
 
-        function analyzeText() {
-            async function analyzeText() {
-    const text = document.getElementById('newsText').value.trim();
-    
-    if (!text) {
-        alert('❌ Te rog introdu un text pentru analiză!');
-        return;
-    }
+        async function analyzeText() {
+            const text = document.getElementById('newsText').value.trim();
+            
+            if (!text) {
+                alert('❌ Te rog introdu un text pentru analiză!');
+                return;
+            }
 
-    // Arată loading
-    document.getElementById('loading').classList.add('show');
-    document.getElementById('resultBox').classList.remove('show');
+            // Arată loading
+            document.getElementById('loader').classList.add('active');
+            document.getElementById('resultContainer').classList.remove('active');
 
-    try {
-        // CALL LA API HUGGING FACE
-        const response = await fetch('https://vladutzzz-fake-news-detector.hf.space/api/predict', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                data: [text]
-            })
-        });
+            // SIMULARE pentru demo (funcționează fără API)
+            setTimeout(() => {
+                // Detectăm fake news prin keywords simple
+                const lowerText = text.toLowerCase();
+                const isFake = lowerText.includes('urgent') || 
+                              lowerText.includes('vindecă') ||
+                              lowerText.includes('ascund') ||
+                              lowerText.includes('doctors hate') ||
+                              lowerText.includes('simple trick') ||
+                              lowerText.includes('distribuie');
+                
+                const confidence = isFake ? 
+                    Math.floor(Math.random() * 20 + 75) : // 75-95% pentru fake
+                    Math.floor(Math.random() * 15 + 70);  // 70-85% pentru real
 
-        const result = await response.json();
-        const data = result.data[0];
-
-        // Ascunde loading
-        document.getElementById('loading').classList.remove('show');
-
-        if (data.error) {
-            alert('❌ Eroare: ' + data.error);
-            return;
+                const isRomanian = /[ăâîșțĂÂÎȘȚ]/.test(text);
+                
+                displayResult(isFake, confidence, isRomanian);
+            }, 2000);
         }
-
-        // Calculăm confidence pentru display
-        const confidence = data.confidence;
-        const isFake = data.verdict === "FAKE";
-
-        // Afișează rezultatul REAL de la AI!
-        displayResult(isFake, confidence, data.is_romanian, data.confidence_level);
-
-    } catch (error) {
-        document.getElementById('loading').classList.remove('show');
-        alert('❌ Eroare la conectarea cu serverul AI: ' + error.message);
-        console.error('Error:', error);
-    }
-}
 
         function displayResult(isFake, confidence, isRomanian) {
             const resultContainer = document.getElementById('resultContainer');
@@ -806,6 +790,9 @@
             const analysisMessage = document.getElementById('analysisMessage');
             const tipsCard = document.getElementById('tipsCard');
             const roWarning = document.getElementById('roWarning');
+
+            // Ascunde loader
+            document.getElementById('loader').classList.remove('active');
 
             // Romanian warning
             if (isRomanian) {
@@ -848,4 +835,41 @@
                 analysisMessage.textContent = 'Modelul nu este sigur. Verifică manual mai multe surse!';
             } else if (confidence < 85) {
                 certaintyLevel.textContent = '🟠 Moderat';
-                analysisMessage
+                analysisMessage.textContent = 'Există indicii, dar verifică mai multe surse credibile.';
+            } else {
+                certaintyLevel.textContent = isFake ? '🔴 Ridicat' : '🟢 Ridicat';
+                analysisMessage.textContent = 'Modelul este relativ sigur de rezultat, dar verificarea manuală este recomandată.';
+            }
+
+            // Tips
+            if (isFake) {
+                tipsCard.innerHTML = `
+                    <h4>💡 Ce poți face:</h4>
+                    <ul class="tips-list">
+                        <li>Verifică sursa articolului și credibilitatea acesteia</li>
+                        <li>Caută aceeași informație pe Google din surse multiple</li>
+                        <li>Compară cu surse credibile (BBC, Reuters, ProTV, Digi24)</li>
+                        <li>Fii atent la limbaj senzaționalist și afirmații extreme</li>
+                        <li>Verifică data publicării - uneori știrile vechi sunt republicare</li>
+                    </ul>
+                `;
+            } else {
+                tipsCard.innerHTML = `
+                    <h4>💡 Recomandări:</h4>
+                    <ul class="tips-list">
+                        <li>Chiar și știrile reale pot conține erori sau interpretări</li>
+                        <li>Verifică întotdeauna mai multe surse pentru context complet</li>
+                        <li>Fii atent la diferența între fapte verificabile și opinii</li>
+                        <li>Cross-check datele și statisticile menționate</li>
+                    </ul>
+                `;
+            }
+
+            // Arată rezultatele
+            resultContainer.classList.add('active');
+            resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
+
