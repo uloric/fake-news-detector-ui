@@ -747,37 +747,54 @@
         }
 
         function analyzeText() {
-            const text = document.getElementById('newsText').value.trim();
-            
-            if (!text) {
-                alert('❌ Te rog introdu un text pentru analiză.');
-                return;
-            }
+            async function analyzeText() {
+    const text = document.getElementById('newsText').value.trim();
+    
+    if (!text) {
+        alert('❌ Te rog introdu un text pentru analiză!');
+        return;
+    }
 
-            const loader = document.getElementById('loader');
-            const resultContainer = document.getElementById('resultContainer');
-            
-            // Show loader
-            loader.classList.add('active');
-            resultContainer.classList.remove('active');
+    // Arată loading
+    document.getElementById('loading').classList.add('show');
+    document.getElementById('resultBox').classList.remove('show');
 
-            // Simulate API call
-            setTimeout(() => {
-                loader.classList.remove('active');
-                
-                // Simulate analysis (în producție aici ar fi API call real)
-                const isFake = text.toLowerCase().includes('urgent') || 
-                              text.toLowerCase().includes('vindec') ||
-                              text.toLowerCase().includes('hate this') ||
-                              text.toLowerCase().includes('doctors hate') ||
-                              Math.random() > 0.6;
-                              
-                const confidence = Math.floor(Math.random() * 25) + (isFake ? 75 : 70);
-                const isRomanian = /[ăâîșțĂÂÎȘȚ]/.test(text);
-                
-                displayResult(isFake, confidence, isRomanian);
-            }, 2500);
+    try {
+        // CALL LA API HUGGING FACE
+        const response = await fetch('https://vladutzzz-fake-news-detector.hf.space/api/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data: [text]
+            })
+        });
+
+        const result = await response.json();
+        const data = result.data[0];
+
+        // Ascunde loading
+        document.getElementById('loading').classList.remove('show');
+
+        if (data.error) {
+            alert('❌ Eroare: ' + data.error);
+            return;
         }
+
+        // Calculăm confidence pentru display
+        const confidence = data.confidence;
+        const isFake = data.verdict === "FAKE";
+
+        // Afișează rezultatul REAL de la AI!
+        displayResult(isFake, confidence, data.is_romanian, data.confidence_level);
+
+    } catch (error) {
+        document.getElementById('loading').classList.remove('show');
+        alert('❌ Eroare la conectarea cu serverul AI: ' + error.message);
+        console.error('Error:', error);
+    }
+}
 
         function displayResult(isFake, confidence, isRomanian) {
             const resultContainer = document.getElementById('resultContainer');
